@@ -12,9 +12,9 @@ npm install openzeppelin-solidity
 # Commands
 
 ```
-  Compile contracts: truffle compile
-  Migrate contracts: truffle migrate --reset
-  Test contracts:    truffle test
+  Compile contracts: truffle compile --all --quiet
+  Migrate contracts: truffle migrate --reset --quiet
+  Test contracts:    truffle test --quiet
 ```
 
 Some on console
