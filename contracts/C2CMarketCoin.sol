@@ -17,7 +17,7 @@ contract C2CMarketCoin is C2CMarketCoinERC20 {
     }
 
 	constructor() {
-		_contractOwner = payable(tx.origin);
+		_contractOwner = payable(msg.sender);
     }
 
 	function getOwnerAddress() public view returns (address) {

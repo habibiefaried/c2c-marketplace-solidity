@@ -6,11 +6,6 @@
 	"output": {
 		"abi": [
 			{
-				"inputs": [],
-				"stateMutability": "nonpayable",
-				"type": "constructor"
-			},
-			{
 				"anonymous": false,
 				"inputs": [
 					{
@@ -41,31 +36,6 @@
 					{
 						"indexed": true,
 						"internalType": "address",
-						"name": "sender",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "amount",
-						"type": "uint256"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "currentBalance",
-						"type": "uint256"
-					}
-				],
-				"name": "Deposit",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": true,
-						"internalType": "address",
 						"name": "from",
 						"type": "address"
 					},
@@ -83,31 +53,6 @@
 					}
 				],
 				"name": "Transfer",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": true,
-						"internalType": "address",
-						"name": "to",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "amount",
-						"type": "uint256"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "currentBalance",
-						"type": "uint256"
-					}
-				],
-				"name": "Withdraw",
 				"type": "event"
 			},
 			{
@@ -175,52 +120,6 @@
 					}
 				],
 				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "getContractBalanceETH",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "getOwnerAddress",
-				"outputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "mint",
-				"outputs": [],
-				"stateMutability": "payable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "rescueETH",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -322,7 +221,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"c2c-marketplace/contracts/C2CMarketCoin.sol": "C2CMarketCoin"
+			"c2c-marketplace/contracts/C2CMarketCoinERC20.sol": "C2CMarketCoinERC20"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -336,14 +235,6 @@
 		"remappings": []
 	},
 	"sources": {
-		"c2c-marketplace/contracts/C2CMarketCoin.sol": {
-			"keccak256": "0x14069b4a5d64c37da1343546c6b464822924fba62a42677a9fd1de53edb6d7e8",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://67e835ba070a1431f7549c63516b4da8761154ca9a6c4d2d718bb8188c5de5ca",
-				"dweb:/ipfs/Qmcte4zXJPYK9y4rSrJ8cRVEuzVRzhkEENaBtFsHcUY27H"
-			]
-		},
 		"c2c-marketplace/contracts/C2CMarketCoinERC20.sol": {
 			"keccak256": "0x765c00017477fbfe80de6e6c1549504e1f0df57d8b07e6fb63695aacd4db74dd",
 			"urls": [
