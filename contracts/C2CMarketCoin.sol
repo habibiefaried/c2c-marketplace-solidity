@@ -1,17 +1,19 @@
 // SPDX-License-Identifier: MIT
 // For demonstration, 1 eth deposit is equal to 1000 C2CMarketCoin
 
-pragma solidity >=0.4.25 <0.7.0;
+pragma solidity ^0.8.0;
 
-contract C2CMarketCoin {
+import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
+
+contract C2CMarketCoin is ERC20 {
 	mapping (address => uint) balances;
 	address payable owner;
 
 	event Deposit(address indexed sender, uint amount, uint balance);
 
-	constructor() public {
-		owner = tx.origin;
-	}
+	constructor() ERC20("C2CMarketCoin", "C2CM") {
+		owner = payable(tx.origin);
+    }
 
 	function getOwnerAddress() public view returns (address) {
 		return owner;

@@ -1,6 +1,14 @@
 # Description
 c2c e-marketplace in solidity
 
+# Install
+
+Need to install openzeppelin first
+
+```
+npm install openzeppelin-solidity
+```
+
 # Commands
 
 ```
