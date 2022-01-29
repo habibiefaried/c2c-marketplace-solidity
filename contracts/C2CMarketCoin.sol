@@ -6,16 +6,22 @@ pragma solidity ^0.8.0;
 import "../contracts/C2CMarketCoinERC20.sol";
 
 contract C2CMarketCoin is C2CMarketCoinERC20 {
-	address payable _contactOwner;
+	address payable _contractOwner;
 
-	event Deposit(address indexed sender, uint amount, uint balance);
+	event Deposit(address indexed sender, uint256 amount, uint256 currentBalance);
+	event Withdraw(address indexed to, uint256 amount, uint256 currentBalance);
+
+	modifier onlyOwner() {
+        require(msg.sender == _contractOwner, "not owner");
+        _;
+    }
 
 	constructor() {
-		_contactOwner = payable(tx.origin);
+		_contractOwner = payable(tx.origin);
     }
 
 	function getOwnerAddress() public view returns (address) {
-		return _contactOwner;
+		return _contractOwner;
 	}
 
 	function mint() external payable {
@@ -28,5 +34,12 @@ contract C2CMarketCoin is C2CMarketCoinERC20 {
 
 	function getContractBalanceETH() external view returns (uint256) {
         return address(this).balance;
+    }
+
+    function rescueETH() external onlyOwner returns (uint256) {
+    	uint256 currentmoney = address(this).balance;
+    	payable(msg.sender).transfer(currentmoney);
+    	emit Withdraw(msg.sender, currentmoney, address(this).balance);
+    	return currentmoney;
     }
 }

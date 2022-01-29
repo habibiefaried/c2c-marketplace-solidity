@@ -32,5 +32,34 @@ contract('C2CMarketCoin', (accounts) => {
     // total supply
     totalsupply = await c2CMarketCoinInstance.totalSupply.call();
     assert.equal(totalsupply, web3.utils.toWei("0.02775", "ether") * 1000, "Total supply expected");
+
+
   });
+
+  it('Rescuing ETH', async () => {
+    const c2CMarketCoinInstance = await C2CMarketCoin.deployed();
+
+    let contractbalance = await c2CMarketCoinInstance.getContractBalanceETH.call();
+    assert.equal(contractbalance, web3.utils.toWei("0.02775", "ether"), "Initial from test above");
+    let ownerbalance = await web3.eth.getBalance(accounts[0]);
+    afterreturn = await contractbalance.add(web3.utils.toBN(ownerbalance));
+
+    try {
+      // make sure only the owner is able to rescue
+      let c = await c2CMarketCoinInstance.rescueETH.call({from: accounts[1]});
+      assert.fail("The transaction should have thrown an error");
+    } catch (err) {
+      assert.include(err.message, "revert", "The error message should contain 'revert'");
+    }
+
+    let moneySent = await c2CMarketCoinInstance.rescueETH.call();
+    assert.equal(moneySent.toString(), contractbalance.toString(), "sending expected money to sender");
+
+    contractbalance = await c2CMarketCoinInstance.getContractBalanceETH.call();
+    assert.equal(contractbalance.toString(), 0, "No eth on this contract");
+    ownerbalance = await web3.eth.getBalance(accounts[0]);
+
+    assert.equal(ownerbalance, afterreturn.toString(), "the money is returned to owner successfully");
+  });
+
 });
