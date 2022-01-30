@@ -27,7 +27,9 @@ jobs:
       run: npm install      
     
     - name: Run Truffle Test with CI=true for Codechecks  
-      run: CI=true truffle test
+      run: truffle test --show-events
+      env:
+        CI: true
 
     - name: Run Codechecks
       run: npx codechecks
@@ -36,10 +38,12 @@ jobs:
     
     - name: Run Test Coverage
       run: truffle run coverage
+      env:
+        CI: true
     
     - name: Generate .coveralls.yml file
       run: echo "${{ secrets.DOT_COVERALLS_YML }}" > .coveralls.yml
-      
+
     - name: Send Coverage Info to CoverAlls
       run: cat coverage/lcov.info | npx coveralls
     
@@ -48,6 +52,7 @@ jobs:
       with:
         python-version: 3.8 # Version range or exact version of a Python version to use, using SemVer's version range syntax
         architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+
     - name: Show Python version
       run: python --version
     
@@ -67,11 +72,11 @@ jobs:
         for sol in "${solidityFiles[@]}"
         do
           echo "Analysing $sol..."
-          python smartBugs.py --tool all --file $DIR/contracts/$sol --unique-sarif-output output.sarif
+          python smartBugs.py --tool all --file $DIR/contracts/$sol --unique-sarif-output /tmp/output.sarif
         done
            
     - name: Upload SARIF file
       uses: github/codeql-action/upload-sarif@v1
       with:
-        sarif_file: output.sarif
+        sarif_file: /tmp/output.sarif
         category: smartbug

@@ -18,6 +18,7 @@ module.exports = {
   //    network_id: "*"
   //  }
   },
+  plugins: ["solidity-coverage"],
   compilers: {
     solc: {
       version: "^0.8.0"
