@@ -6,7 +6,7 @@ pragma solidity ^0.8.0;
 contract C2CMarketCoinStore {
 	address payable _storeOwner;
 	struct Item { 
-		uint256 price; // in C2CMarketCoin
+		uint256 price; // in wei
 		uint256 qty; // quantity, number of item this have
 		string imagelink; //maybe image link to aws s3 or ipfs protocol
 		bool isExist; // for checking purpose if item is exist

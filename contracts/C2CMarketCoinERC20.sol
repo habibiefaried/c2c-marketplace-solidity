@@ -6,7 +6,7 @@ pragma solidity ^0.8.0;
 import "openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
 
 contract C2CMarketCoinERC20 is IERC20 {
-	mapping (address => uint256) internal _balances;
+	mapping (address => uint256) internal _balances; //in wei
 	uint256 internal _totalSupply;
 
     // Implementation

@@ -1,6 +1,10 @@
 const C2CMarketCoin = artifacts.require("C2CMarketCoin");
 
 contract('C2CMarketCoin', (accounts) => {
+  const itemName = "jacket";
+  const jacketQty = 5;
+  const jacketPrice = 0.5 * 1000000000000000; // 1 jacket is 0.5 coin
+
   it('Test init', async () => {
     const c2CMarketCoinInstance = await C2CMarketCoin.deployed();
     const address = await c2CMarketCoinInstance.getOwnerAddress.call();
@@ -16,12 +20,12 @@ contract('C2CMarketCoin', (accounts) => {
     assert.equal(balance, web3.utils.toWei("0.025", "ether") * 1000, "Deposit working properly"); // should have 25 coins
 
     // Deposit from second acc
-    await c2CMarketCoinInstance.mint({from: accounts[2], value: web3.utils.toWei("0.0025", "ether")});
+    await c2CMarketCoinInstance.mint({from: accounts[2], value: web3.utils.toWei("0.0025", "ether")}); // should have 2.5 coins
     balance = await c2CMarketCoinInstance.balanceOf.call(accounts[2]);
     assert.equal(balance, web3.utils.toWei("0.0025", "ether") * 1000, "Deposit working properly"); 
 
     // Deposit from third acc
-    await c2CMarketCoinInstance.mint({from: accounts[3], value: web3.utils.toWei("0.00025", "ether")});
+    await c2CMarketCoinInstance.mint({from: accounts[3], value: web3.utils.toWei("0.00025", "ether")}); // should have 0.25 coins
     balance = await c2CMarketCoinInstance.balanceOf.call(accounts[3]);
     assert.equal(balance, web3.utils.toWei("0.00025", "ether") * 1000, "Deposit working properly"); 
 
@@ -65,31 +69,42 @@ contract('C2CMarketCoin', (accounts) => {
 
   it('Add items', async() => {
     const c2CMarketCoinInstance = await C2CMarketCoin.deployed();
-    await c2CMarketCoinInstance.setMyStoreItem("jacket", 1, 5,"https://store.com/jacket.png", {from: accounts[1]});
-    let zeitem = await c2CMarketCoinInstance.getMyStoreItem("jacket", {from: accounts[1]});
+    await c2CMarketCoinInstance.setMyStoreItem(itemName, jacketPrice, jacketQty, "https://store.com/jacket.png", {from: accounts[1]});
+    let zeitem = await c2CMarketCoinInstance.getMyStoreItem(itemName, {from: accounts[1]});
 
-    assert.equal(zeitem[0], 1, "Price of jacket is 1 coin");
-    assert.equal(zeitem[1], 5, "Qty of jacket is 5");
+    assert.equal(zeitem[0], jacketPrice, "Price of "+itemName+" is "+jacketPrice+" coin");
+    assert.equal(zeitem[1], jacketQty, "Qty of "+itemName+" is "+jacketQty);
     assert.equal(zeitem[2], "https://store.com/jacket.png", "Link is correct");
 
     try {
       // make sure only account that minted will be able to store item
-      await c2CMarketCoinInstance.setMyStoreItem("shoes", 1, 5,"https://store.com/shoes.png", {from: accounts[5]});
+      await c2CMarketCoinInstance.setMyStoreItem("shoes", 1, 2, "https://store.com/shoes.png", {from: accounts[5]});
       assert.fail("Your account didn't mint any coin yet");
     } catch (err) {
       assert.include(err.message, "revert", "The error message should contain 'revert'");
     }
   });
 
-  it('Buy item', async() => {
+  it('Buy item from account 2', async() => {
     const c2CMarketCoinInstance = await C2CMarketCoin.deployed();
-    await c2CMarketCoinInstance.buyItem(accounts[1], "jacket", 2, {from: accounts[2]}); // buy jacket on store account[1] from account[2]
+    const buyJacketQtyAcc2 = 2;
+
+    let balanceAcc1Before = await c2CMarketCoinInstance.balanceOf(accounts[1]);
+    let balanceAcc2Before = await c2CMarketCoinInstance.balanceOf(accounts[2]);
+    await c2CMarketCoinInstance.buyItem(accounts[1], itemName, buyJacketQtyAcc2, {from: accounts[2]}); // buy jacket on store account[1] from account[2]
+    let balanceAcc1After = await c2CMarketCoinInstance.balanceOf(accounts[1]);
+    let balanceAcc2After = await c2CMarketCoinInstance.balanceOf(accounts[2]);
 
     let zeowner = await c2CMarketCoinInstance.getMyOwnedItem(0, {from: accounts[2]}); // on account[2]
-    console.log(zeowner);
+    assert.equal(zeowner[0], accounts[1], "Equal to origin store");
+    assert.equal(zeowner[1], itemName, "The item is "+itemName);
+    assert.equal(zeowner[2], buyJacketQtyAcc2, "Bought "+buyJacketQtyAcc2+" jackets");
 
     let zeitem = await c2CMarketCoinInstance.getMyStoreItem("jacket", {from: accounts[1]});
-    assert.equal(zeitem[1], 3, "Qty of jacket is 3, 2 jackets has been bought");
+    assert.equal(zeitem[1], jacketQty - buyJacketQtyAcc2, "Check current qty of "+itemName+" in acc1");
+
+    assert.equal(balanceAcc2Before - (buyJacketQtyAcc2 * jacketPrice), balanceAcc2After, "Equal on acc2 after transaction");
+    assert.equal(balanceAcc1After - (buyJacketQtyAcc2 * jacketPrice), balanceAcc1Before, "Equal on acc1 after transaction");
   });
 
 });

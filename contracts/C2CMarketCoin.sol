@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 // For demonstration, 1 eth is equal to 1000 C2CMarketCoin
-// 1 user is ONLY able to handle 1 store
+// Which is, 1 C2CMarketCoin = 1000000000000000 wei
+// All of data here is stored in wei
+// 1 user is ONLY able to handle 1 store 
 
 pragma solidity ^0.8.0;
 
@@ -84,17 +86,17 @@ contract C2CMarketCoin is C2CMarketCoinERC20 {
 	function buyItem(
 		address storeOwner,
 		string memory _itemname,
-		uint256 _qty) 
+		uint256 qtyToBuy) 
 	public onlyMintedStoreOwner(msg.sender) onlyMintedStoreOwner(storeOwner)
 	{
 		uint256 price; uint256 qtyavail; string memory link;
 		(price, qtyavail, link) = _allstores[storeOwner].getOneItem(_itemname);
-		require(_qty > 0, "need to buy 1 or more item");
-		require(qtyavail >= _qty, "cannot buy more than available");
+		require(qtyToBuy > 0, "need to buy 1 or more item");
+		require(qtyavail >= qtyToBuy, "cannot buy more than available");
 
-		_transfer(msg.sender, storeOwner, price * qtyavail);
-		_allstores[storeOwner].setItem(_itemname, price, qtyavail - _qty, link);
-		_ownerships[msg.sender].push(ItemOwnership({store: storeOwner, name: _itemname, qty:_qty, imagelink: link}));
+		_transfer(msg.sender, storeOwner, price * qtyToBuy);
+		_allstores[storeOwner].setItem(_itemname, price, qtyavail - qtyToBuy, link);
+		_ownerships[msg.sender].push(ItemOwnership({store: storeOwner, name: _itemname, qty:qtyToBuy, imagelink: link}));
 	}
 
 	function getMyOwnedItem(uint256 index) 
