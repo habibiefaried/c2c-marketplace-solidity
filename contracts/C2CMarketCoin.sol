@@ -88,7 +88,9 @@ contract C2CMarketCoin is C2CMarketCoinERC20 {
 		address storeOwner,
 		string memory _itemname,
 		uint256 qtyToBuy) 
-	public onlyMintedStoreOwner(msg.sender) onlyMintedStoreOwner(storeOwner)
+	public 
+	onlyMintedStoreOwner(msg.sender) 
+	onlyMintedStoreOwner(storeOwner)
 	{
 		uint256 price; uint256 qtyavail; string memory link;
 		(price, qtyavail, link) = _allstores[storeOwner].getOneItem(_itemname);
@@ -101,7 +103,8 @@ contract C2CMarketCoin is C2CMarketCoinERC20 {
 	}
 
 	function getMyOwnedItem(uint256 index) 
-		external view onlyMintedStoreOwner(msg.sender)
+		external
+		view onlyMintedStoreOwner(msg.sender)
 	returns (
 		address,
 		string memory,
@@ -114,6 +117,16 @@ contract C2CMarketCoin is C2CMarketCoinERC20 {
 			_ownerships[msg.sender][index].qty,
 			_ownerships[msg.sender][index].imagelink
 		);
+	}
+
+	function getNumberOfItemTransactionDone() 
+		external
+		view
+		onlyMintedStoreOwner(msg.sender)
+	returns
+		(uint256)
+	{
+    	return _ownerships[msg.sender].length;
 	}
 
 	// Related to ETH

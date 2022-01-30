@@ -107,6 +107,9 @@ contract('C2CMarketCoin', (accounts) => {
 
     assert.equal(balanceAcc2Before - (buyJacketQtyAcc2 * jacketPrice), balanceAcc2After, "Equal on acc2 after transaction");
     assert.equal(balanceAcc1After - (buyJacketQtyAcc2 * jacketPrice), balanceAcc1Before, "Equal on acc1 after transaction");
+
+    letItemOwnedAcc2 = await c2CMarketCoinInstance.getNumberOfItemTransactionDone({from: accounts[2]});
+    assert.equal(letItemOwnedAcc2, 1, "How many item transaction happened on acc 2, should already 1");
   });
 
   it('Buy item from account 3', async() => {
@@ -121,6 +124,10 @@ contract('C2CMarketCoin', (accounts) => {
     } catch (err) {
       assert.include(err.message, "revert", "The error message should contain 'revert'");
     }
-    
+
+    letItemOwnedAcc3 = await c2CMarketCoinInstance.getNumberOfItemTransactionDone({from: accounts[3]});
+    assert.equal(letItemOwnedAcc3, 0, "How many item transaction happened on acc 3, should still 0");
+
   });
+
 });
