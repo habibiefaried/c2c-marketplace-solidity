@@ -128,11 +128,11 @@
 	},
 	"sources": {
 		"c2c-marketplace/contracts/C2CMarketCoinStore.sol": {
-			"keccak256": "0xea9c08b5db81ba071b46896f7cb215965f01124d50d7fc5c9e55ec53d5754127",
+			"keccak256": "0x27248688f43de8f294db25919bbfdbb35700256ca9a9441e3122d5f6029c2e75",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://515a86e410b71f1af39b25bbc93713f3aa92b3163ae2206cf39796e0e9be9b23",
-				"dweb:/ipfs/QmZ4iVvo2H3TxJWFwLG3HHnKjUAkzS8bJFK4EPZ5Ronn96"
+				"bzz-raw://e27c8093bae770e39bb353fbf8a5c4e9879f3371f358a67be27bffddf34df377",
+				"dweb:/ipfs/QmRRPGAeNLc1Yo7pFgZf9ZMmCb9Qdte5Dwfu4cQf9HteQP"
 			]
 		}
 	},

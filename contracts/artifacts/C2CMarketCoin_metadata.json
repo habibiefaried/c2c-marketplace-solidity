@@ -215,6 +215,29 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "storeOwner",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "_itemname",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_qty",
+						"type": "uint256"
+					}
+				],
+				"name": "buyItem",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "getContractBalanceETH",
 				"outputs": [
@@ -230,12 +253,46 @@
 			{
 				"inputs": [
 					{
+						"internalType": "uint256",
+						"name": "index",
+						"type": "uint256"
+					}
+				],
+				"name": "getMyOwnedItem",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "string",
 						"name": "_itemname",
 						"type": "string"
 					}
 				],
-				"name": "getMyItem",
+				"name": "getMyStoreItem",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -325,7 +382,7 @@
 						"type": "string"
 					}
 				],
-				"name": "setMyItem",
+				"name": "setMyStoreItem",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -444,27 +501,27 @@
 	},
 	"sources": {
 		"c2c-marketplace/contracts/C2CMarketCoin.sol": {
-			"keccak256": "0x51b0080ca8ff68d652f8b75c6965d54d7e90488acf498693e28adbe366924aa9",
+			"keccak256": "0x463cdcb2e92f8caf610b2d6099f788fcf7f1c7c2c25238aa3d268b66078594e0",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://3359311d74d36904c5c17e8b423e4cef00e1c0b24fa7b13bed8227b83c41f66e",
-				"dweb:/ipfs/QmRTBPHiFKqGysH9fHaWjHV8cdPLrC2oHz6hUKXJNJup1p"
+				"bzz-raw://0469f4359d9a4bd163ad1e8cae47dc2192101fac068caf03816e18832e813c1b",
+				"dweb:/ipfs/QmUqMf1Q6HJhxdm9vxyNAo3EqvQQvG7SJYUBvKDXkdMtgR"
 			]
 		},
 		"c2c-marketplace/contracts/C2CMarketCoinERC20.sol": {
-			"keccak256": "0xa1c835c969540ef77dd96d27cbdfec1a220b516aa5183357a989ff101dd48e1a",
+			"keccak256": "0x4c5d5ad733255c7df5bbfd4ed175e6b0050ccb882eaafd80f2ed8be03205022c",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://6f074368416b0a1e842b052cc24b878966e1a240557f473b767c5d72b633a590",
-				"dweb:/ipfs/QmYZ6cynhLcVbeoLJBW11hTKo8d6EXsB8TQNywzRUF2dpH"
+				"bzz-raw://9973a985af86fae700d40460cbb290438955f09b160249bdcb384a884783a498",
+				"dweb:/ipfs/QmVPdzxMmTfgrGFkixANiXHBWFpXSsf6Uybiv8bdEUkB4i"
 			]
 		},
 		"c2c-marketplace/contracts/C2CMarketCoinStore.sol": {
-			"keccak256": "0xea9c08b5db81ba071b46896f7cb215965f01124d50d7fc5c9e55ec53d5754127",
+			"keccak256": "0x27248688f43de8f294db25919bbfdbb35700256ca9a9441e3122d5f6029c2e75",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://515a86e410b71f1af39b25bbc93713f3aa92b3163ae2206cf39796e0e9be9b23",
-				"dweb:/ipfs/QmZ4iVvo2H3TxJWFwLG3HHnKjUAkzS8bJFK4EPZ5Ronn96"
+				"bzz-raw://e27c8093bae770e39bb353fbf8a5c4e9879f3371f358a67be27bffddf34df377",
+				"dweb:/ipfs/QmRRPGAeNLc1Yo7pFgZf9ZMmCb9Qdte5Dwfu4cQf9HteQP"
 			]
 		},
 		"openzeppelin-solidity/contracts/token/ERC20/IERC20.sol": {

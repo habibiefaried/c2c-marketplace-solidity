@@ -65,20 +65,31 @@ contract('C2CMarketCoin', (accounts) => {
 
   it('Add items', async() => {
     const c2CMarketCoinInstance = await C2CMarketCoin.deployed();
-    await c2CMarketCoinInstance.setMyItem("jacket", 1, 2,"https://store.com/jacket.png", {from: accounts[1]});
-    let zeitem = await c2CMarketCoinInstance.getMyItem("jacket", {from: accounts[1]});
+    await c2CMarketCoinInstance.setMyStoreItem("jacket", 1, 5,"https://store.com/jacket.png", {from: accounts[1]});
+    let zeitem = await c2CMarketCoinInstance.getMyStoreItem("jacket", {from: accounts[1]});
 
     assert.equal(zeitem[0], 1, "Price of jacket is 1 coin");
+    assert.equal(zeitem[1], 5, "Qty of jacket is 5");
     assert.equal(zeitem[2], "https://store.com/jacket.png", "Link is correct");
 
     try {
       // make sure only account that minted will be able to store item
-      await c2CMarketCoinInstance.setMyItem("shoes", 1, 2,"https://store.com/shoes.png", {from: accounts[5]});
+      await c2CMarketCoinInstance.setMyStoreItem("shoes", 1, 5,"https://store.com/shoes.png", {from: accounts[5]});
       assert.fail("Your account didn't mint any coin yet");
     } catch (err) {
       assert.include(err.message, "revert", "The error message should contain 'revert'");
     }
+  });
 
+  it('Buy item', async() => {
+    const c2CMarketCoinInstance = await C2CMarketCoin.deployed();
+    await c2CMarketCoinInstance.buyItem(accounts[1], "jacket", 2, {from: accounts[2]}); // buy jacket on store account[1] from account[2]
+
+    let zeowner = await c2CMarketCoinInstance.getMyOwnedItem(0, {from: accounts[2]}); // on account[2]
+    console.log(zeowner);
+
+    let zeitem = await c2CMarketCoinInstance.getMyStoreItem("jacket", {from: accounts[1]});
+    assert.equal(zeitem[1], 3, "Qty of jacket is 3, 2 jackets has been bought");
   });
 
 });
