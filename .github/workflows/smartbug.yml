@@ -34,7 +34,7 @@ jobs:
       run: |
         pwd
         ls 
-        python /tmp/smartBugs.py --tool all --dataset all --file contracts/ --unique-sarif-output /tmp/output.sarif
+        python /tmp/smartbugs/smartBugs.py --tool all --dataset all --file contracts/ --unique-sarif-output /tmp/output.sarif
 
     - name: Upload SARIF file
       uses: github/codeql-action/upload-sarif@v1
