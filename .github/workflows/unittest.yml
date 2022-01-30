@@ -66,12 +66,12 @@ jobs:
         python-version: 3.8 # Version range or exact version of a Python version to use, using SemVer's version range syntax
         architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
 
-    - name: Install and run smartbugs analysis
+    - name: Install and run SAST
       run: |
         pwd
         ls -lah
         sudo pip3 install slither-analyzer 
-        slither . --sarif /tmp/output.sarif
+        slither . --sarif /tmp/output.sarif || true
 
     - name: Upload SARIF file
       uses: github/codeql-action/upload-sarif@v1
