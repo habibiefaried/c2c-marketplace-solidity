@@ -32,7 +32,7 @@ contract C2CMarketCoinStore {
    		if (_myitems[_name].isExist == false){
    			_myitemkeys.push(_name);
    		}
-		require(_qty > 0, "need to put 1 more item");
+		require(_qty >= 0, "cannot less than 0");
 		require(_price > 0 , "price must be equal or more than 0");
 		
    		_myitems[_name] = Item({price: _price, qty: _qty, imagelink: _imagelink, isExist: true});

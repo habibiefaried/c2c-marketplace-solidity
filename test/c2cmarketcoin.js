@@ -3,7 +3,9 @@ const C2CMarketCoin = artifacts.require("C2CMarketCoin");
 contract('C2CMarketCoin', (accounts) => {
   const itemName = "jacket";
   const jacketQty = 5;
-  const jacketPrice = 0.5 * 1000000000000000; // 1 jacket is 0.5 coin
+  //const jacketPrice = 1000000000000000000; // 1 C2CMarketCoin
+  const jacketPrice = web3.utils.toWei("0.001", "ether") * 1000; // 1 C2CMarketCoin
+
 
   it('Test init', async () => {
     const c2CMarketCoinInstance = await C2CMarketCoin.deployed();
@@ -69,11 +71,11 @@ contract('C2CMarketCoin', (accounts) => {
 
   it('Add items', async() => {
     const c2CMarketCoinInstance = await C2CMarketCoin.deployed();
-    await c2CMarketCoinInstance.setMyStoreItem(itemName, jacketPrice, jacketQty, "https://store.com/jacket.png", {from: accounts[1]});
+    await c2CMarketCoinInstance.setMyStoreItem(itemName, jacketPrice.toString(), jacketQty, "https://store.com/jacket.png", {from: accounts[1]});
     let zeitem = await c2CMarketCoinInstance.getMyStoreItem(itemName, {from: accounts[1]});
 
-    assert.equal(zeitem[0], jacketPrice, "Price of "+itemName+" is "+jacketPrice+" coin");
-    assert.equal(zeitem[1], jacketQty, "Qty of "+itemName+" is "+jacketQty);
+    assert.equal(zeitem[0], jacketPrice, "Item price is correct");
+    assert.equal(zeitem[1], jacketQty, "Qty of item is correct");
     assert.equal(zeitem[2], "https://store.com/jacket.png", "Link is correct");
 
     try {
@@ -107,4 +109,18 @@ contract('C2CMarketCoin', (accounts) => {
     assert.equal(balanceAcc1After - (buyJacketQtyAcc2 * jacketPrice), balanceAcc1Before, "Equal on acc1 after transaction");
   });
 
+  it('Buy item from account 3', async() => {
+    const c2CMarketCoinInstance = await C2CMarketCoin.deployed();
+    const buyJacketQtyAcc3 = 3;
+    let balanceAcc3Before = await c2CMarketCoinInstance.balanceOf.call(accounts[3]);
+
+    try {
+      // buy jacket on store account[1] from account[3]
+      await c2CMarketCoinInstance.buyItem(accounts[1], itemName, buyJacketQtyAcc3, {from: accounts[3]});     
+      assert.fail("Should error because lack of money");
+    } catch (err) {
+      assert.include(err.message, "revert", "The error message should contain 'revert'");
+    }
+    
+  });
 });

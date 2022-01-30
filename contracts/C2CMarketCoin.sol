@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
-// For demonstration, 1 eth is equal to 1000 C2CMarketCoin
-// Which is, 1 C2CMarketCoin = 1000000000000000 wei
+// For demonstration
+// 1 eth = 1000000000000000000 wei
+// 1 C2CMarketCoin = 1000000000000000000 * 1000 wei (upscale)
 // All of data here is stored in wei
 // 1 user is ONLY able to handle 1 store 
 
