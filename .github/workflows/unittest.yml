@@ -20,6 +20,18 @@ jobs:
     - name: Show NodeJS version    
       run: npm --version
     
+    - name: Cache node modules
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-node-modules
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+
     - name: Install Truffle
       run: npm install truffle -g
     
@@ -41,11 +53,12 @@ jobs:
       env:
         CI: true
     
-    - name: Generate .coveralls.yml file
-      run: echo "${{ secrets.DOT_COVERALLS_YML }}" > .coveralls.yml
-
-    - name: Send Coverage Info to CoverAlls
-      run: cat coverage/lcov.info | npx coveralls
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: ./coverage/lcov.info
+        flag-name: unit
     
     - name: Setup Python 3.8  
       uses: actions/setup-python@v2

@@ -29,3 +29,5 @@ let c2CMarketCoinInstance = await C2CMarketCoin.deployed();
 * Solidity: https://solidity-by-example.org/
 * JS Web3 library: https://web3js.readthedocs.io/en/v1.2.11/web3.html
 * Contracts: https://github.com/OpenZeppelin/openzeppelin-contracts/tree/master/contracts
+* Coverage: https://coveralls.io/
+* Static code check: https://app.codechecks.io/
