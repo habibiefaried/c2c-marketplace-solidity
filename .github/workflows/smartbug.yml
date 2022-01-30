@@ -23,24 +23,19 @@ jobs:
       run: python --version
     
     - name: Clone SmartBugs Repo
-      run: git clone https://github.com/smartbugs/smartbugs.git
-    
-    - name: Remove SmartBugs Results and Install SmartBugs Dependencies
       run: |
+        cd /tmp
+        git clone https://github.com/smartbugs/smartbugs.git
         cd smartbugs
         rm -r results
         pip install -r requirements.txt
 
     - name: Run SmartBugs Analysis
       run: |
-        solidityFiles=($(ls -I Migrations.sol contracts))
-        DIR=$(pwd);cd smartbugs
-        for sol in "${solidityFiles[@]}"
-        do
-          echo "Analysing $sol..."
-          python smartBugs.py --tool all --file $DIR/contracts/$sol --unique-sarif-output /tmp/output.sarif
-        done
-           
+        pwd
+        ls 
+        python /tmp/smartBugs.py --tool all --dataset all --file contracts/ --unique-sarif-output /tmp/output.sarif
+
     - name: Upload SARIF file
       uses: github/codeql-action/upload-sarif@v1
       with:

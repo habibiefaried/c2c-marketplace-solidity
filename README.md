@@ -1,4 +1,5 @@
 # Description
+[![Coverage Status](https://coveralls.io/repos/github/habibiefaried/c2c-marketplace/badge.svg)](https://coveralls.io/github/habibiefaried/c2c-marketplace)
 c2c e-marketplace in solidity
 
 # Install
