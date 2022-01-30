@@ -22,19 +22,14 @@ jobs:
     - name: Show Python version
       run: python --version
     
-    - name: Clone SmartBugs Repo
+    - name: Install and run smartbugs analysis
       run: |
         cd /tmp
         git clone https://github.com/smartbugs/smartbugs.git
         cd smartbugs
         rm -r results
         pip install -r requirements.txt
-
-    - name: Run SmartBugs Analysis
-      run: |
-        pwd
-        ls 
-        python /tmp/smartbugs/smartBugs.py --tool all --dataset all --file contracts/ --unique-sarif-output /tmp/output.sarif
+        python smartBugs.py --tool all --file ${env.GITHUB_WORKSPACE}/contracts/ --unique-sarif-output /tmp/output.sarif
 
     - name: Upload SARIF file
       uses: github/codeql-action/upload-sarif@v1
