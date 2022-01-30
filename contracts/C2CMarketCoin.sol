@@ -21,12 +21,21 @@ contract C2CMarketCoin is C2CMarketCoinERC20 {
         _;
     }
 
+    modifier onlyMintedStoreOwner() {
+        require(_allinitializedstore[msg.sender], "you need to mint money first");
+        _;
+    }
+
 	constructor() {
 		_contractOwner = payable(msg.sender);
     }
 
 	function getOwnerAddress() public view returns (address) {
 		return _contractOwner;
+	}
+
+	function isStoreInitialized() external view returns (bool){
+		return _allinitializedstore[msg.sender];
 	}
 
 	function mint() external payable {
@@ -37,14 +46,24 @@ contract C2CMarketCoin is C2CMarketCoinERC20 {
 
 		if (_allinitializedstore[msg.sender] == false){
 			_allinitializedstore[msg.sender] = true;
-			_allstores[msg.sender] = C2CMarketCoinStore(msg.sender);
+			_allstores[msg.sender] = new C2CMarketCoinStore(msg.sender);
 		}
 		emit Deposit(msg.sender, msg.value, address(this).balance);
 	}
 
-	function setItem(string memory _itemname, uint256 _itemprice, uint256 _qty, string memory _imagelink) public {
+	function setMyItem(
+		string memory _itemname, 
+		uint256 _itemprice,
+		uint256 _qty,
+		string memory _imagelink
+		)
+	external onlyMintedStoreOwner {
 		_allstores[msg.sender].setItem(_itemname, _itemprice, _qty, _imagelink);
 		emit SetItem(msg.sender, _itemname, _itemprice, _qty, _imagelink);
+	}
+
+	function getMyItem(string memory _itemname) external view onlyMintedStoreOwner returns (uint256, uint256, string memory) {
+		return _allstores[msg.sender].getOneItem(_itemname);
 	}
 
 	// Related to ETH

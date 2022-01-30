@@ -70,6 +70,43 @@
 						"type": "address"
 					},
 					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "qty",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "imagelink",
+						"type": "string"
+					}
+				],
+				"name": "SetItem",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
 						"indexed": true,
 						"internalType": "address",
 						"name": "to",
@@ -191,6 +228,35 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_itemname",
+						"type": "string"
+					}
+				],
+				"name": "getMyItem",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "getOwnerAddress",
 				"outputs": [
@@ -198,6 +264,19 @@
 						"internalType": "address",
 						"name": "",
 						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "isStoreInitialized",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
 					}
 				],
 				"stateMutability": "view",
@@ -220,6 +299,34 @@
 						"type": "uint256"
 					}
 				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_itemname",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_itemprice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_qty",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "_imagelink",
+						"type": "string"
+					}
+				],
+				"name": "setMyItem",
+				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			},
@@ -337,18 +444,27 @@
 	},
 	"sources": {
 		"c2c-marketplace/contracts/C2CMarketCoin.sol": {
-			"keccak256": "0x14069b4a5d64c37da1343546c6b464822924fba62a42677a9fd1de53edb6d7e8",
+			"keccak256": "0x51b0080ca8ff68d652f8b75c6965d54d7e90488acf498693e28adbe366924aa9",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://67e835ba070a1431f7549c63516b4da8761154ca9a6c4d2d718bb8188c5de5ca",
-				"dweb:/ipfs/Qmcte4zXJPYK9y4rSrJ8cRVEuzVRzhkEENaBtFsHcUY27H"
+				"bzz-raw://3359311d74d36904c5c17e8b423e4cef00e1c0b24fa7b13bed8227b83c41f66e",
+				"dweb:/ipfs/QmRTBPHiFKqGysH9fHaWjHV8cdPLrC2oHz6hUKXJNJup1p"
 			]
 		},
 		"c2c-marketplace/contracts/C2CMarketCoinERC20.sol": {
-			"keccak256": "0x765c00017477fbfe80de6e6c1549504e1f0df57d8b07e6fb63695aacd4db74dd",
+			"keccak256": "0xa1c835c969540ef77dd96d27cbdfec1a220b516aa5183357a989ff101dd48e1a",
+			"license": "MIT",
 			"urls": [
-				"bzz-raw://5e225eb0b8fb52ee3a31aaac85d2e2dc8cb4976415f4876d122b2142e7c8ae46",
-				"dweb:/ipfs/QmQ7gLq7y67LQvKQQvYi3EW6zbPtRH3eCKtRgFLrEC1QMT"
+				"bzz-raw://6f074368416b0a1e842b052cc24b878966e1a240557f473b767c5d72b633a590",
+				"dweb:/ipfs/QmYZ6cynhLcVbeoLJBW11hTKo8d6EXsB8TQNywzRUF2dpH"
+			]
+		},
+		"c2c-marketplace/contracts/C2CMarketCoinStore.sol": {
+			"keccak256": "0xea9c08b5db81ba071b46896f7cb215965f01124d50d7fc5c9e55ec53d5754127",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://515a86e410b71f1af39b25bbc93713f3aa92b3163ae2206cf39796e0e9be9b23",
+				"dweb:/ipfs/QmZ4iVvo2H3TxJWFwLG3HHnKjUAkzS8bJFK4EPZ5Ronn96"
 			]
 		},
 		"openzeppelin-solidity/contracts/token/ERC20/IERC20.sol": {

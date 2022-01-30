@@ -12,18 +12,26 @@ contract C2CMarketCoinStore {
 	  bool isExist; // for checking purpose if item is exist
    	}
 
-   	string[] private _myitemkeys; //storing item keys for below
-   	mapping(string => Item) private _myitems;
+   	string[]  private _myitemkeys; //storing item keys for below
+   	mapping(string => Item) private  _myitems;
 
-   	constructor(address _owner) {
-		_storeOwner = payable(_owner);
+   	constructor(address storeOwner) {
+		_storeOwner = payable(storeOwner);
     }
 
-   	function setItem(string memory _name, uint256 _price, uint256 _qty, string memory _imagelink) public {
+    function getStoreOwner() external view returns (address){
+    	return _storeOwner;
+    }
+
+   	function setItem (
+   		string memory _name,
+   		uint256 _price,
+   		uint256 _qty,
+   		string memory _imagelink
+   	) public {
    		if (_myitems[_name].isExist == false){
    			_myitemkeys.push(_name);
    		}
-
    		_myitems[_name] = Item({price: _price, qty: _qty, imagelink: _imagelink, isExist: true});
    	}
 

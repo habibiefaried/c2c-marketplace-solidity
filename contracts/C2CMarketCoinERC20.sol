@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT
+// This contract will implement ERC20
+
 pragma solidity ^0.8.0;
 
 import "openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";

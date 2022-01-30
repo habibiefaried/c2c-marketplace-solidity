@@ -62,5 +62,13 @@ contract('C2CMarketCoin', (accounts) => {
     let contractbalanceafter = await c2CMarketCoinInstance.getContractBalanceETH.call();
     assert.equal(contractbalanceafter, web3.utils.toWei("0.02775", "ether"), "The money is still there after calling rescue, ok..");
   });
-;
+
+  it('Add items', async() => {
+    const c2CMarketCoinInstance = await C2CMarketCoin.deployed();
+    await c2CMarketCoinInstance.setMyItem("jacket", 1, 2,"https://store.com/jacket.png", {from: accounts[1]});
+    let zeitem = await c2CMarketCoinInstance.getMyItem("jacket", {from: accounts[1]});
+
+    assert.equal(zeitem[0], 1, "Price of jacket is 1 coin");
+  });
+
 });
