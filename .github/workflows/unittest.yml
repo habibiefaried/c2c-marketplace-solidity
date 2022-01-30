@@ -32,12 +32,12 @@ jobs:
           ${{ runner.os }}-build-
           ${{ runner.os }}-
 
-    - name: Install Truffle
-      run: npm install truffle -g
-    
-    - name: Install Truffle Dependencies
-      run: npm install      
-    
+    - name: Install Truffle & dep
+      run: |
+        npm install -g solc
+        npm install -g truffle
+        npm install
+
     - name: Run Truffle Test with CI=true for Codechecks  
       run: truffle test --show-events
       env:
@@ -59,3 +59,22 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: ./coverage/lcov.info
         flag-name: unit
+
+    - name: Setup Python 3.8  
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8 # Version range or exact version of a Python version to use, using SemVer's version range syntax
+        architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+
+    - name: Install and run smartbugs analysis
+      run: |
+        pwd
+        ls -lah
+        sudo pip3 install slither-analyzer 
+        slither . --sarif /tmp/output.sarif
+
+    - name: Upload SARIF file
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: /tmp/output.sarif
+        category: slither
