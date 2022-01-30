@@ -1,0 +1,48 @@
+name: Smartbug Static Code Analysis
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Python 3.8  
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8 # Version range or exact version of a Python version to use, using SemVer's version range syntax
+        architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+
+    - name: Show Python version
+      run: python --version
+    
+    - name: Clone SmartBugs Repo
+      run: git clone https://github.com/smartbugs/smartbugs.git
+    
+    - name: Remove SmartBugs Results and Install SmartBugs Dependencies
+      run: |
+        cd smartbugs
+        rm -r results
+        pip install -r requirements.txt
+
+    - name: Run SmartBugs Analysis
+      run: |
+        solidityFiles=($(ls -I Migrations.sol contracts))
+        DIR=$(pwd);cd smartbugs
+        for sol in "${solidityFiles[@]}"
+        do
+          echo "Analysing $sol..."
+          python smartBugs.py --tool all --file $DIR/contracts/$sol --unique-sarif-output /tmp/output.sarif
+        done
+           
+    - name: Upload SARIF file
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: /tmp/output.sarif
+        category: smartbug
