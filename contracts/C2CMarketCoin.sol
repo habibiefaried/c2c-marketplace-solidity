@@ -1,16 +1,29 @@
 // SPDX-License-Identifier: MIT
-// For demonstration, 1 eth is equal to 1000 C2CMarketCoin
-// 1 user is ONLY able to handle 1 store
+// For demonstration
+// 1 eth = 1000000000000000000 wei
+// 1 C2CMarketCoin = 1000000000000000000 * 1000 wei (upscale)
+// All of data here is stored in wei
+// 1 user is ONLY able to handle 1 store 
 
 pragma solidity ^0.8.0;
 
+import "openzeppelin-solidity/contracts/security/ReentrancyGuard.sol";
 import "../contracts/C2CMarketCoinERC20.sol";
 import "../contracts/C2CMarketCoinStore.sol";
 
-contract C2CMarketCoin is C2CMarketCoinERC20 {
+
+contract C2CMarketCoin is C2CMarketCoinERC20, ReentrancyGuard {
+	struct ItemOwnership { 
+		address store; // from which store the user bought this
+		string name; // name of the item
+		uint256 qty; // quantity you bought at that time
+		string imagelink; // link to the image
+   	}
+
 	address payable _contractOwner;
 	mapping(address => C2CMarketCoinStore) private _allstores;
 	mapping(address => bool) private _allinitializedstore;
+	mapping(address => ItemOwnership[]) private _ownerships; // key value between the user and his/her item ownership
 
 	event Deposit(address indexed sender, uint256 amount, uint256 currentBalance);
 	event Withdraw(address indexed to, uint256 amount, uint256 currentBalance);
@@ -21,8 +34,8 @@ contract C2CMarketCoin is C2CMarketCoinERC20 {
         _;
     }
 
-    modifier onlyMintedStoreOwner() {
-        require(_allinitializedstore[msg.sender], "you need to mint money first");
+    modifier onlyMintedStoreOwner(address callee) {
+        require(_allinitializedstore[callee], "This acc needs to mint token first");
         _;
     }
 
@@ -51,19 +64,71 @@ contract C2CMarketCoin is C2CMarketCoinERC20 {
 		emit Deposit(msg.sender, msg.value, address(this).balance);
 	}
 
-	function setMyItem(
+	function setMyStoreItem (
 		string memory _itemname, 
 		uint256 _itemprice,
 		uint256 _qty,
 		string memory _imagelink
-		)
-	external onlyMintedStoreOwner {
+	)
+	external nonReentrant onlyMintedStoreOwner(msg.sender)
+	{
 		_allstores[msg.sender].setItem(_itemname, _itemprice, _qty, _imagelink);
 		emit SetItem(msg.sender, _itemname, _itemprice, _qty, _imagelink);
 	}
 
-	function getMyItem(string memory _itemname) external view onlyMintedStoreOwner returns (uint256, uint256, string memory) {
+	function getMyStoreItem(string memory _itemname)
+		external view onlyMintedStoreOwner(msg.sender)
+	returns (
+		uint256,
+		uint256,
+		string memory
+	) {
 		return _allstores[msg.sender].getOneItem(_itemname);
+	}
+
+	function buyItem(
+		address storeOwner,
+		string memory _itemname,
+		uint256 qtyToBuy) 
+	public 
+	onlyMintedStoreOwner(msg.sender) 
+	onlyMintedStoreOwner(storeOwner)
+	{
+		uint256 price; uint256 qtyavail; string memory link;
+		(price, qtyavail, link) = _allstores[storeOwner].getOneItem(_itemname);
+		require(qtyToBuy > 0, "need to buy 1 or more item");
+		require(qtyavail >= qtyToBuy, "cannot buy more than available");
+
+		_transfer(msg.sender, storeOwner, price * qtyToBuy);
+		_allstores[storeOwner].setItem(_itemname, price, qtyavail - qtyToBuy, link);
+		_ownerships[msg.sender].push(ItemOwnership({store: storeOwner, name: _itemname, qty:qtyToBuy, imagelink: link}));
+	}
+
+	function getMyOwnedItem(uint256 index) 
+		external
+		view onlyMintedStoreOwner(msg.sender)
+	returns (
+		address,
+		string memory,
+		uint256,
+		string memory)
+	{	
+		return (
+			_ownerships[msg.sender][index].store,
+			_ownerships[msg.sender][index].name,
+			_ownerships[msg.sender][index].qty,
+			_ownerships[msg.sender][index].imagelink
+		);
+	}
+
+	function getNumberOfItemTransactionDone() 
+		external
+		view
+		onlyMintedStoreOwner(msg.sender)
+	returns
+		(uint256)
+	{
+    	return _ownerships[msg.sender].length;
 	}
 
 	// Related to ETH

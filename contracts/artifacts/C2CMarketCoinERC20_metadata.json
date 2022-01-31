@@ -236,10 +236,11 @@
 	},
 	"sources": {
 		"c2c-marketplace/contracts/C2CMarketCoinERC20.sol": {
-			"keccak256": "0x765c00017477fbfe80de6e6c1549504e1f0df57d8b07e6fb63695aacd4db74dd",
+			"keccak256": "0x4c5d5ad733255c7df5bbfd4ed175e6b0050ccb882eaafd80f2ed8be03205022c",
+			"license": "MIT",
 			"urls": [
-				"bzz-raw://5e225eb0b8fb52ee3a31aaac85d2e2dc8cb4976415f4876d122b2142e7c8ae46",
-				"dweb:/ipfs/QmQ7gLq7y67LQvKQQvYi3EW6zbPtRH3eCKtRgFLrEC1QMT"
+				"bzz-raw://9973a985af86fae700d40460cbb290438955f09b160249bdcb384a884783a498",
+				"dweb:/ipfs/QmVPdzxMmTfgrGFkixANiXHBWFpXSsf6Uybiv8bdEUkB4i"
 			]
 		},
 		"openzeppelin-solidity/contracts/token/ERC20/IERC20.sol": {
