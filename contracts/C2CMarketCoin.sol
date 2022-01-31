@@ -7,10 +7,12 @@
 
 pragma solidity ^0.8.0;
 
+import "openzeppelin-solidity/contracts/security/ReentrancyGuard.sol";
 import "../contracts/C2CMarketCoinERC20.sol";
 import "../contracts/C2CMarketCoinStore.sol";
 
-contract C2CMarketCoin is C2CMarketCoinERC20 {
+
+contract C2CMarketCoin is C2CMarketCoinERC20, ReentrancyGuard {
 	struct ItemOwnership { 
 		address store; // from which store the user bought this
 		string name; // name of the item
@@ -62,13 +64,13 @@ contract C2CMarketCoin is C2CMarketCoinERC20 {
 		emit Deposit(msg.sender, msg.value, address(this).balance);
 	}
 
-	function setMyStoreItem(
+	function setMyStoreItem (
 		string memory _itemname, 
 		uint256 _itemprice,
 		uint256 _qty,
 		string memory _imagelink
 	)
-	external onlyMintedStoreOwner(msg.sender)
+	external nonReentrant onlyMintedStoreOwner(msg.sender)
 	{
 		_allstores[msg.sender].setItem(_itemname, _itemprice, _qty, _imagelink);
 		emit SetItem(msg.sender, _itemname, _itemprice, _qty, _imagelink);
