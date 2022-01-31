@@ -6,7 +6,7 @@
 
 // hevm: flattened sources of src/ReFi.sol
 // SPDX-License-Identifier: MIT
-pragma solidity =0.8.10 >=0.8.0 <0.9.0;
+pragma solidity ^0.8.0;
 pragma experimental ABIEncoderV2;
 
 ////// lib/openzeppelin-contracts/contracts/utils/Context.sol
